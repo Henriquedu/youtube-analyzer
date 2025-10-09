@@ -22,7 +22,7 @@ O **YouTube Video Analyzer** é uma aplicação desenvolvida em **Python + Strea
 👉 [https://henriquemaia-youtubeanalyzer.streamlit.app](https://henriquemaia-youtubeanalyzer.streamlit.app)
 
 🌎 **Landing Page no GitHub Pages:**  
-👉 [https://henriquedu.github.io/youtube-analyzer-site/](https://henriquedu.github.io/youtube-analyzer-site/)
+👉 [https://henriquedu.github.io/youtube-analyzer-site/](https://henriquedu.github.io/youtube-analyzer/)
 
 ---
 

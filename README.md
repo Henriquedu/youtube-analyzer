@@ -53,3 +53,36 @@ O **YouTube Video Analyzer** é uma aplicação desenvolvida em **Python + Strea
 
 ## 🧭 Estrutura do Projeto
 
+📦 youtube-analyzer
+├── app.py
+├── requirements.txt
+├── utils/
+│   ├── transcript.py
+│   ├── summarize.py
+│   └── downloader.py
+│
+📦 youtube-analyzer-site
+├── index.html
+└── style.css
+
+---
+
+##🚀 Como Executar Localmente
+
+1️⃣ Clone o repositório
+git clone https://github.com/henriquedu/youtube-analyzer.git
+cd youtube-analyzer
+
+2️⃣ Crie um ambiente virtual
+python -m venv venv
+source venv/bin/activate  # (Linux/Mac)
+venv\Scripts\activate     # (Windows)
+
+3️⃣ Instale as dependências
+pip install -r requirements.txt
+
+4️⃣ Crie um arquivo .env com sua chave da OpenAI
+OPENAI_API_KEY=your_api_key_here
+
+5️⃣ Execute o app
+streamlit run app.py

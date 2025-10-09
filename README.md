@@ -54,20 +54,30 @@ O **YouTube Video Analyzer** é uma aplicação desenvolvida em **Python + Strea
 ## 🧭 Estrutura do Projeto
 
 📦 youtube-analyzer
+
 ├── app.py
+
 ├── requirements.txt
+
 ├── utils/
+
 │   ├── transcript.py
+
 │   ├── summarize.py
+
 │   └── downloader.py
+
 │
+
 📦 youtube-analyzer-site
+
 ├── index.html
+
 └── style.css
 
 ---
 
-##🚀 Como Executar Localmente
+## 🚀 Como Executar Localmente
 
 1️⃣ Clone o repositório
 git clone https://github.com/henriquedu/youtube-analyzer.git

@@ -1,7 +1,7 @@
 // YouTube Analyzer - Frontend
 class YouTubeAnalyzer {
     constructor() {
-        this.API_URL = 'https://your-backend-url.onrender.com'; // ← VOCÊ VAI MUDAR ISSO
+        this.API_URL = 'https://youtube-analyzer-api-y07l.onrender.com'; // ← VOCÊ VAI MUDAR ISSO
         
         this.form = document.getElementById('analyzeForm');
         this.videoUrlInput = document.getElementById('videoUrl');
@@ -143,4 +143,5 @@ class YouTubeAnalyzer {
 // Inicializa a aplicação
 document.addEventListener('DOMContentLoaded', () => {
     new YouTubeAnalyzer();
+
 });

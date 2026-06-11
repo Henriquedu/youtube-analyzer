@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <div class="hero-content">
+                <span class="badge">Resumo inteligente de vídeos</span>
+                <h1>YouTube Analyzer</h1>
+                <p>
+                    Cole o link de um vídeo do YouTube com transcrição disponível e receba um resumo organizado, tópicos principais, conclusão e a transcrição completa.
+                </p>
+            </div>
+        </section>
+
+        <section class="card form-card">
+            <form id="analyzerForm">
+                <label for="videoUrl">Link do vídeo</label>
+                <div class="input-group">
+                    <input
+                        type="url"
+                        id="videoUrl"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        required
+                    >
+                    <button type="submit" id="analyzeButton">Analisar</button>
+                </div>
+                <small>
+                    Funciona apenas com vídeos que possuem legenda ou transcrição pública.
+                </small>
+            </form>
+        </section>
+
+        <section id="statusBox" class="status hidden"></section>
+
+        <section id="resultSection" class="result-grid hidden">
+            <article class="card summary-card">
+                <div class="section-header">
+                    <span>Resumo completo</span>
+                    <button type="button" id="copySummaryButton">Copiar resumo</button>
+                </div>
+                <p id="summaryText"></p>
+            </article>
+
+            <article class="card">
+                <div class="section-header">
+                    <span>Tópicos principais</span>
+                </div>
+                <ul id="topicsList"></ul>
+            </article>
+
+            <article class="card">
+                <div class="section-header">
+                    <span>Conclusão</span>
+                </div>
+                <p id="conclusionText"></p>
+            </article>
+
+            <article class="card stats-card">
+                <div class="section-header">
+                    <span>Dados da análise</span>
+                </div>
+                <div class="stats">
+                    <div>
+                        <strong id="wordCount">0</strong>
+                        <small>palavras</small>
+                    </div>
+                    <div>
+                        <strong id="transcriptSize">0</strong>
+                        <small>caracteres</small>
+                    </div>
+                    <div>
+                        <strong id="transcriptLanguage">-</strong>
+                        <small>idioma</small>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card transcript-card">
+                <div class="section-header">
+                    <span>Transcrição completa</span>
+                    <button type="button" id="toggleTranscriptButton">Mostrar</button>
+                </div>
+                <div id="transcriptBox" class="transcript hidden"></div>
+            </article>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -41,20 +41,20 @@ class YouTubeResumidor:
         video_id = self.extract_video_id(url_video)
         logger.info("Buscando transcrição para vídeo: %s", video_id)
 
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-
         for language in self.transcript_languages:
             try:
-                transcript = transcript_list.find_transcript([language])
-                transcript_items = transcript.fetch()
+                transcript_items = YouTubeTranscriptApi.get_transcript(
+                    video_id,
+                    languages=[language]
+                )
+
                 return self.formatar_transcricao(transcript_items), language
-            except Exception:
-                continue
+            except Exception as error:
+                logger.info("Transcrição não encontrada em %s: %s", language, error)
 
         try:
-            generated_transcript = transcript_list.find_generated_transcript(self.transcript_languages)
-            transcript_items = generated_transcript.fetch()
-            return self.formatar_transcricao(transcript_items), generated_transcript.language_code
+            transcript_items = YouTubeTranscriptApi.get_transcript(video_id)
+            return self.formatar_transcricao(transcript_items), "auto"
         except Exception as error:
             logger.warning("Transcrição não encontrada: %s", error)
 
@@ -136,8 +136,7 @@ class YouTubeResumidor:
         if not frases:
             return "Não foi possível identificar uma conclusão."
 
-        conclusao = " ".join(frases[-4:])
-        return conclusao
+        return " ".join(frases[-4:])
 
     def analisar_video(self, url_video):
         linhas_transcricao, idioma = self.pegar_transcricao_completa(url_video)

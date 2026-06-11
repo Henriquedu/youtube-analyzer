@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class YouTubeResumidor:
     def __init__(self):
-        self.transcript_languages = ["pt", "pt-BR", "en", "es"]
+        self.transcript_languages = ["pt", "pt-BR", "pt-PT", "en", "en-US", "es"]
 
     def extract_video_id(self, url):
         parsed_url = urlparse(url)
@@ -41,24 +41,60 @@ class YouTubeResumidor:
         video_id = self.extract_video_id(url_video)
         logger.info("Buscando transcrição para vídeo: %s", video_id)
 
-        for language in self.transcript_languages:
+        tentativas = [
+            self.buscar_com_idiomas_preferidos,
+            self.buscar_transcricao_manual,
+            self.buscar_transcricao_automatica,
+            self.buscar_sem_idioma_definido,
+        ]
+
+        erros = []
+
+        for tentativa in tentativas:
             try:
-                transcript_items = YouTubeTranscriptApi.get_transcript(
-                    video_id,
-                    languages=[language]
-                )
+                transcript_items, idioma = tentativa(video_id)
 
-                return self.formatar_transcricao(transcript_items), language
+                if transcript_items:
+                    return self.formatar_transcricao(transcript_items), idioma
             except Exception as error:
-                logger.info("Transcrição não encontrada em %s: %s", language, error)
+                erros.append(str(error))
+                logger.info("Tentativa falhou: %s", error)
 
-        try:
-            transcript_items = YouTubeTranscriptApi.get_transcript(video_id)
-            return self.formatar_transcricao(transcript_items), "auto"
-        except Exception as error:
-            logger.warning("Transcrição não encontrada: %s", error)
+        logger.warning("Todas as tentativas falharam: %s", " | ".join(erros))
+        raise ValueError("Este vídeo possui transcrição no YouTube, mas ela não está acessível pela API neste momento.")
 
-        raise ValueError("Este vídeo não possui transcrição pública disponível.")
+    def buscar_com_idiomas_preferidos(self, video_id):
+        transcript_items = YouTubeTranscriptApi.get_transcript(
+            video_id,
+            languages=self.transcript_languages,
+            preserve_formatting=True
+        )
+
+        return transcript_items, "preferido"
+
+    def buscar_transcricao_manual(self, video_id):
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+
+        for transcript in transcript_list:
+            if not transcript.is_generated:
+                transcript_items = transcript.fetch()
+                return transcript_items, transcript.language_code
+
+        raise ValueError("Nenhuma transcrição manual encontrada.")
+
+    def buscar_transcricao_automatica(self, video_id):
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+
+        for transcript in transcript_list:
+            if transcript.is_generated:
+                transcript_items = transcript.fetch()
+                return transcript_items, transcript.language_code
+
+        raise ValueError("Nenhuma transcrição automática encontrada.")
+
+    def buscar_sem_idioma_definido(self, video_id):
+        transcript_items = YouTubeTranscriptApi.get_transcript(video_id)
+        return transcript_items, "auto"
 
     def formatar_transcricao(self, transcript_items):
         linhas = []
